@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable Viewer - Beautiful & Interactive</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --shadow-soft: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-hover: 0 15px 35px rgba(31, 38, 135, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(118, 75, 162, 0.8)); }
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .controls-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .controls-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .form-select:disabled {
+            background: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+
+        .loading-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .error-section {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .timetable-container {
+            display: none;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .timetable-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .batch-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--success-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .table-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+        }
+
+        .timetable-table {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .timetable-table thead th {
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 1.5rem 1rem;
+            border: none;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .day-header {
+            background: var(--secondary-gradient) !important;
+            color: white !important;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.3rem;
+            padding: 1.5rem !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .timetable-table tbody tr {
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .timetable-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timetable-table td {
+            padding: 1.2rem 1rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            vertical-align: middle;
+            transition: all 0.3s ease;
+        }
+
+        .time-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f8f9ff, #e8f0ff);
+            color: #4c51bf;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .time-cell::before {
+            content: '⏰';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .subject-cell {
+            font-weight: 600;
+            color: #2d3748;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .subject-cell::before {
+            content: '📚';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .room-cell {
+            color: #4a5568;
+            font-weight: 500;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .room-cell::before {
+            content: '🏫';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .teacher-cell {
+            color: #2d3748;
+            font-weight: 500;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .teacher-cell::before {
+            content: '👨‍🏫';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .download-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn {
+            background: var(--warning-gradient);
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(67, 233, 123, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(67, 233, 123, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .header-title {
+                font-size: 2.5rem;
+            }
+
+            .controls-section {
+                padding: 1.5rem;
+            }
+
+            .timetable-table {
+                font-size: 0.9rem;
+            }
+
+            .timetable-table td {
+                padding: 0.8rem 0.5rem;
+            }
+
+            .time-cell::before,
+            .subject-cell::before,
+            .room-cell::before,
+            .teacher-cell::before {
+                display: none;
+            }
+
+            .subject-cell,
+            .room-cell,
+            .teacher-cell {
+                padding-left: 1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-gradient);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-gradient);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1 class="header-title">
+                    <i class="fas fa-calendar-alt me-3"></i>
+                    Timetable Viewer
+                </h1>
+                <p class="header-subtitle">
+                    Discover your schedule with style and elegance
+                </p>
+            </div>
+
+            <!-- Controls Section -->
+            <div class="controls-section">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="yearSelect" class="form-label">
+                            <i class="fas fa-calendar-year"></i>
+                            Select Academic Year
+                        </label>
+                        <select class="form-select" id="yearSelect">
+                            <option value="">Choose a year...</option>
+                            {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="batchSelect" class="form-label">
+                            <i class="fas fa-users"></i>
+                            Select Batch
+                        </label>
+                        <select class="form-select" id="batchSelect" disabled>
+                            <option value="">Choose a batch...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Section -->
+            <div class="loading-section" id="loadingSection">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading your timetable...</div>
+            </div>
+
+            <!-- Error Section -->
+            <div class="error-section" id="errorSection">
+                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                <h4>Oops! Something went wrong</h4>
+                <p id="errorMessage">Timetable not found</p>
+            </div>
+
+            <!-- Timetable Container -->
+            <div class="timetable-container" id="timetableContainer">
+                <!-- Timetable Header -->
+                <div class="timetable-header">
+                    <div class="batch-info" id="batchInfo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span id="batchText">Year: - | Batch: -</span>
+                    </div>
+                </div>
+
+                <!-- Statistics Section -->
+                <div class="stats-section" id="statsSection">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalClasses">0</div>
+                        <div class="stat-label">Total Classes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalDays">0</div>
+                        <div class="stat-label">Active Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalSubjects">0</div>
+                        <div class="stat-label">Subjects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalTeachers">0</div>
+                        <div class="stat-label">Teachers</div>
+                    </div>
+                </div>
+
+                <!-- Timetable Table -->
+                <div class="table-wrapper">
+                    <div class="table-responsive">
+                        <table class="table timetable-table" id="timetableTable">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-clock me-2"></i>Time</th>
+                                    <th><i class="fas fa-book me-2"></i>Subject</th>
+                                    <th><i class="fas fa-door-open me-2"></i>Room</th>
+                                    <th><i class="fas fa-chalkboard-teacher me-2"></i>Teacher</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timetableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Download Section -->
+                <div class="download-section">
+                    <button class="download-btn" id="downloadBtn">
+                        <i class="fas fa-download me-2"></i>
+                        Download as PDF
+                    </button>
+                    <p class="mt-3 text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Get a beautifully formatted PDF of your timetable
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function() {
+            const batchesData = {{ batches | tojson }};
+            let currentYear = '';
+            let currentBatch = '';
+            
+            // Initialize particles
+            initParticles();
+            
+            // Event handlers
+            $('#yearSelect').change(function() {
+                const selectedYear = $(this).val();
+                handleYearChange(selectedYear);
+            });
+            
+            $('#batchSelect').change(function() {
+                const selectedBatch = $(this).val();
+                handleBatchChange(selectedBatch);
+            });
+            
+            $('#downloadBtn').click(function() {
+                downloadTimetable();
+            });
+            
+            // Initialize floating particles
+            function initParticles() {
+                const particlesContainer = $('#particles');
+                const particleCount = 50;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = $('<div class="particle"></div>');
+                    particle.css({
+                        left: Math.random() * 100 + '%',
+                        top: Math.random() * 100 + '%',
+                        animationDelay: Math.random() * 6 + 's',
+                        animationDuration: (Math.random() * 3 + 3) + 's'
+                    });
+                    particlesContainer.append(particle);
+                }
+            }
+            
+            // Handle year selection change
+            function handleYearChange(selectedYear) {
+                currentYear = selectedYear;
+                const batchSelect = $('#batchSelect');
+                
+                if (selectedYear) {
+                    batchSelect.prop('disabled', false);
+                    populateBatchDropdown(selectedYear);
+                    
+                    // Add selection animation
+                    $('#yearSelect').addClass('animate__animated animate__pulse');
+                    setTimeout(() => {
+                        $('#yearSelect').removeClass('animate__animated animate__pulse');
+                    }, 600);
+                } else {
+                    batchSelect.prop('disabled', true).empty().append('<option value="">Choose a batch...</option>');
+                    clearTimetable();
+                }
+            }
+            
+            // Populate batch dropdown based on selected year
+            function populateBatchDropdown(year) {
+                const batchSelect = $('#batchSelect');
+                batchSelect.empty().append('<option value="">Choose a batch...</option>');
+                
+                if (batchesData[year]) {
+                    batchesData[year].forEach(function(batch) {
+                        batchSelect.append(`<option value="${batch}">${batch}</option>`);
+                    });
+                }
+            }
+            
+            // Handle batch selection change
+            function handleBatchChange(selectedBatch) {
+                currentBatch = selectedBatch;
+                
+                if (selectedBatch && currentYear) {
+                    loadTimetable(currentYear, selectedBatch);
+                    
+                    // Add selection animation
+                    $('#batchSelect').addClass('animate__animated animate__pulse');
+                    setTimeout(() => {
+                        $('#batchSelect').removeClass('animate__animated animate__pulse');
+                    }, 600);
+                } else {
+                    clearTimetable();
+                }
+            }
+            
+            // Load timetable data
+            function loadTimetable(year, batch) {
+                showLoading();
+                
+                $.ajax({
+                    url: `/timetable/${year}/${batch}`,
+                    method: 'GET',
+                    success: function(data) {
+                        hideLoading();
+                        displayTimetable(data.timetable, year, batch);
+                        updateStatistics(data.timetable);
+                    },
+                    error: function() {
+                        hideLoading();
+                        showError('Timetable not found for the selected year and batch');
+                    }
+                });
+            }
+            
+            // Display timetable data
+            function displayTimetable(timetableData, year, batch) {
+                const tbody = $('#timetableBody');
+                tbody.empty();
+                
+                // Update batch info
+                $('#batchText').text(`Year: ${year} | Batch: ${batch}`);
+                
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                
+                days.forEach(function(day) {
+                    if (timetableData[day] && timetableData[day].length > 0) {
+                        // Add day header with animation
+                        const dayHeader = $(`
+                            <tr>
+                                <td colspan="4" class="day-header">
+                                    <i class="fas fa-calendar-day me-2"></i>
+                                    ${day}
+                                </td>
+                            </tr>
+                        `);
+                        tbody.append(dayHeader);
+                        
+                        // Add timetable entries for the day
+                        timetableData[day].forEach(function(entry, index) {
+                            const row = $(`
+                                <tr style="animation-delay: ${index * 0.1}s">
+                                    <td class="time-cell">${entry.Time || '-'}</td>
+                                    <td class="subject-cell">${entry.Subject || 'Free'}</td>
+                                    <td class="room-cell">${entry.Room || '-'}</td>
+                                    <td class="teacher-cell">${entry.Teacher || '-'}</td>
+                                </tr>
+                            `);
+                            tbody.append(row);
+                        });
+                    }
+                });
+                
+                $('#timetableContainer').show();
+                $('#errorSection').hide();
+                
+                // Animate table rows
+                setTimeout(() => {
+                    $('#timetableBody tr').each(function(index) {
+                        $(this).css({
+                            opacity: 0,
+                            transform: 'translateX(-20px)'
+                        }).animate({
+                            opacity: 1
+                        }, 300).css({
+                            transform: 'translateX(0)'
+                        });
+                    });
+                }, 100);
+            }
+            
+            // Update statistics
+            function updateStatistics(timetableData) {
+                let totalClasses = 0;
+                let activeDays = 0;
+                const subjects = new Set();
+                const teachers = new Set();
+                
+                Object.keys(timetableData).forEach(day => {
+                    if (timetableData[day] && timetableData[day].length > 0) {
+                        activeDays++;
+                        timetableData[day].forEach(entry => {
+                            totalClasses++;
+                            if (entry.Subject && entry.Subject !== 'Free') {
+                                subjects.add(entry.Subject);
+                            }
+                            if (entry.Teacher && entry.Teacher !== '-') {
+                                teachers.add(entry.Teacher);
+                            }
+                        });
+                    }
+                });
+                
+                // Animate counters
+                animateCounter('#totalClasses', totalClasses);
+                animateCounter('#totalDays', activeDays);
+                animateCounter('#totalSubjects', subjects.size);
+                animateCounter('#totalTeachers', teachers.size);
+            }
+            
+            // Animate counter numbers
+            function animateCounter(selector, target) {
+                const element = $(selector);
+                const duration = 1000;
+                const steps = 30;
+                const increment = target / steps;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.text(Math.floor(current));
+                }, duration / steps);
+            }
+            
+            // Download timetable as PDF
+            function downloadTimetable() {
+                if (currentYear && currentBatch) {
+                    // Add download animation
+                    $('#downloadBtn').addClass('animate__animated animate__pulse');
+                    setTimeout(() => {
+                        $('#downloadBtn').removeClass('animate__animated animate__pulse');
+                    }, 600);
+                    
+                    window.open(`/download/${currentYear}/${currentBatch}`, '_blank');
+                }
+            }
+            
+            // Show loading spinner
+            function showLoading() {
+                $('#loadingSection').show();
+                $('#timetableContainer').hide();
+                $('#errorSection').hide();
+            }
+            
+            // Hide loading spinner
+            function hideLoading() {
+                $('#loadingSection').hide();
+            }
+            
+            // Show error message
+            function showError(message) {
+                $('#errorMessage').text(message);
+                $('#errorSection').show();
+                $('#timetableContainer').hide();
+            }
+            
+            // Clear timetable display
+            function clearTimetable() {
+                $('#timetableContainer').hide();
+                $('#errorSection').hide();
+                currentBatch = '';
+            }
+            
+            // Add some interactive effects
+            $(document).on('mouseenter', '.timetable-table tbody tr', function() {
+                $(this).find('td').each(function(index) {
+                    setTimeout(() => {
+                        $(this).addClass('animate__animated animate__pulse');
+                    }, index * 50);
+                });
+            });
+            
+            $(document).on('mouseleave', '.timetable-table tbody tr', function() {
+                $(this).find('td').removeClass('animate__animated animate__pulse');
+            });
+        });
+    </script>
+</body>
+</html>

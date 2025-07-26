@@ -1,0 +1,26 @@
+Day,Time,Subject,Room,Teacher
+Monday,8:30-9:30,Data Structures,Lab 602,Prof. Steven Chang
+Monday,9:30-10:30,Calculus III,Room 302,Dr. Margaret Ross
+Monday,10:45-11:45,Modern Literature,Room 204,Ms. Catherine Moore
+Monday,12:45-1:45,Biochemistry,Lab 502,Dr. Andrew Scott
+Monday,1:45-2:45,Robotics,Lab 701,Mr. Peter Jackson
+Tuesday,8:30-9:30,Astrophysics,Lab 404,Prof. Jennifer White
+Tuesday,9:30-10:30,Data Structures,Lab 602,Prof. Steven Chang
+Tuesday,10:45-11:45,Calculus III,Room 302,Dr. Margaret Ross
+Tuesday,12:45-1:45,Psychology,Room 205,Dr. Laura Martinez
+Tuesday,1:45-2:45,3D Modeling,Studio 702,Ms. Olivia Chen
+Wednesday,8:30-9:30,Biochemistry,Lab 502,Dr. Andrew Scott
+Wednesday,9:30-10:30,Modern Literature,Room 204,Ms. Catherine Moore
+Wednesday,10:45-11:45,Data Structures,Lab 602,Prof. Steven Chang
+Wednesday,12:45-1:45,Rock Climbing,Climbing Wall,Coach Mike Thompson
+Wednesday,1:45-2:45,Orchestra,Music Hall,Maestro Antonio Rossi
+Thursday,8:30-9:30,Calculus III,Room 302,Dr. Margaret Ross
+Thursday,9:30-10:30,Robotics,Lab 701,Mr. Peter Jackson
+Thursday,10:45-11:45,Astrophysics,Lab 404,Prof. Jennifer White
+Thursday,12:45-1:45,Sociology,Room 206,Dr. Karen Davis
+Thursday,1:45-2:45,Mandarin,Room 207,老师 Li Wei
+Friday,8:30-9:30,Psychology,Room 205,Dr. Laura Martinez
+Friday,9:30-10:30,Biochemistry,Lab 502,Dr. Andrew Scott
+Friday,10:45-11:45,Modern Literature,Room 204,Ms. Catherine Moore
+Friday,12:45-1:45,Data Structures,Lab 602,Prof. Steven Chang
+Friday,1:45-2:45,Innovation Lab,Maker Space,Dr. Team Faculty

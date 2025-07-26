@@ -1,0 +1,26 @@
+Day,Time,Subject,Room,Teacher
+Monday,9:00-10:00,Physics,Lab 201,Prof. Michael Chen
+Monday,10:00-11:00,Mathematics,Room 102,Dr. John Smith
+Monday,11:15-12:15,English Literature,Room 107,Mr. Thomas Wright
+Monday,1:15-2:15,Biology,Lab 203,Dr. Amanda Clark
+Monday,2:15-3:15,Chemistry,Lab 302,Prof. Kevin Lee
+Tuesday,9:00-10:00,Computer Science,Lab 402,Ms. Jessica Taylor
+Tuesday,10:00-11:00,Physics,Lab 201,Prof. Michael Chen
+Tuesday,11:15-12:15,Mathematics,Room 102,Dr. John Smith
+Tuesday,1:15-2:15,Art & Design,Studio 502,Mr. Carlos Martinez
+Tuesday,2:15-3:15,History,Room 205,Dr. Patricia Davis
+Wednesday,9:00-10:00,Biology,Lab 203,Dr. Amanda Clark
+Wednesday,10:00-11:00,English Literature,Room 107,Mr. Thomas Wright
+Wednesday,11:15-12:15,Chemistry,Lab 302,Prof. Kevin Lee
+Wednesday,1:15-2:15,Physical Education,Gymnasium,Coach Sarah Miller
+Wednesday,2:15-3:15,Spanish,Room 108,Señora Ana Gonzalez
+Thursday,9:00-10:00,Mathematics,Room 102,Dr. John Smith
+Thursday,10:00-11:00,Computer Science,Lab 402,Ms. Jessica Taylor
+Thursday,11:15-12:15,Biology,Lab 203,Dr. Amanda Clark
+Thursday,1:15-2:15,Music,Music Room,Ms. Helen Foster
+Thursday,2:15-3:15,Geography,Room 206,Mr. Brian Wilson
+Friday,9:00-10:00,Chemistry,Lab 302,Prof. Kevin Lee
+Friday,10:00-11:00,History,Room 205,Dr. Patricia Davis
+Friday,11:15-12:15,Physics,Lab 201,Prof. Michael Chen
+Friday,1:15-2:15,English Literature,Room 107,Mr. Thomas Wright
+Friday,2:15-3:15,Free Period,Library,Ms. Linda Brown

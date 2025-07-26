@@ -1,0 +1,26 @@
+Day,Time,Subject,Room,Teacher
+Monday,9:00-10:00,Mathematics,Room 101,Dr. Sarah Johnson
+Monday,10:00-11:00,Physics,Lab 201,Prof. Michael Chen
+Monday,11:15-12:15,Chemistry,Lab 301,Dr. Emily Rodriguez
+Monday,1:15-2:15,English Literature,Room 105,Ms. Jennifer Wilson
+Monday,2:15-3:15,Computer Science,Lab 401,Mr. David Kumar
+Tuesday,9:00-10:00,Biology,Lab 202,Dr. Lisa Thompson
+Tuesday,10:00-11:00,Mathematics,Room 101,Dr. Sarah Johnson
+Tuesday,11:15-12:15,History,Room 203,Prof. Robert Anderson
+Tuesday,1:15-2:15,Physics,Lab 201,Prof. Michael Chen
+Tuesday,2:15-3:15,Art & Design,Studio 501,Ms. Maria Garcia
+Wednesday,9:00-10:00,Chemistry,Lab 301,Dr. Emily Rodriguez
+Wednesday,10:00-11:00,English Literature,Room 105,Ms. Jennifer Wilson
+Wednesday,11:15-12:15,Mathematics,Room 101,Dr. Sarah Johnson
+Wednesday,1:15-2:15,Physical Education,Gymnasium,Coach Alex Turner
+Wednesday,2:15-3:15,Music,Music Room,Mr. James Parker
+Thursday,9:00-10:00,Computer Science,Lab 401,Mr. David Kumar
+Thursday,10:00-11:00,Biology,Lab 202,Dr. Lisa Thompson
+Thursday,11:15-12:15,Physics,Lab 201,Prof. Michael Chen
+Thursday,1:15-2:15,Geography,Room 204,Ms. Rachel Green
+Thursday,2:15-3:15,French,Room 106,Mme. Sophie Dubois
+Friday,9:00-10:00,History,Room 203,Prof. Robert Anderson
+Friday,10:00-11:00,Chemistry,Lab 301,Dr. Emily Rodriguez
+Friday,11:15-12:15,English Literature,Room 105,Ms. Jennifer Wilson
+Friday,1:15-2:15,Mathematics,Room 101,Dr. Sarah Johnson
+Friday,2:15-3:15,Study Hall,Library,Ms. Linda Brown
